@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A8ABE121E71252100C2CB41 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8ABE111E71252100C2CB41 /* Foundation.framework */; };
 		0AEE7F231E70119C00DEB98F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE7F221E70119C00DEB98F /* AppDelegate.swift */; };
 		0AEE7F251E70119C00DEB98F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE7F241E70119C00DEB98F /* ViewController.swift */; };
 		0AEE7F281E70119C00DEB98F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AEE7F261E70119C00DEB98F /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A8ABE111E71252100C2CB41 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0AEE7F1F1E70119C00DEB98F /* Rappi_App_List_Task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rappi_App_List_Task.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AEE7F221E70119C00DEB98F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0AEE7F241E70119C00DEB98F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,17 +37,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A8ABE121E71252100C2CB41 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A8ABE101E71252100C2CB41 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0A8ABE111E71252100C2CB41 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		0AEE7F161E70119C00DEB98F = {
 			isa = PBXGroup;
 			children = (
 				0AEE7F211E70119C00DEB98F /* Rappi_App_List_Task */,
 				0AEE7F201E70119C00DEB98F /* Products */,
+				0A8ABE101E71252100C2CB41 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -351,6 +363,7 @@
 				0AEE7F331E70119C00DEB98F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

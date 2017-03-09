@@ -10,4 +10,8 @@ import UIKit
 
 class AppCell: UICollectionViewCell {
     
+    @IBOutlet weak var appImage: UIImageView!
+    @IBOutlet weak var appName: UILabel!
+    @IBOutlet weak var copyright: UILabel!
+    
 }
