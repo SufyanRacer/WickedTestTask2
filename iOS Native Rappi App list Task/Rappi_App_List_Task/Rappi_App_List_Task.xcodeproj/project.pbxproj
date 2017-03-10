@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0A8ABE121E71252100C2CB41 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8ABE111E71252100C2CB41 /* Foundation.framework */; };
+		0ABA0F421E72C932009CEA8B /* AppDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABA0F411E72C932009CEA8B /* AppDetailViewController.swift */; };
+		0ABA0F441E72D90A009CEA8B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABA0F431E72D90A009CEA8B /* Reachability.swift */; };
 		0AEE7F231E70119C00DEB98F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE7F221E70119C00DEB98F /* AppDelegate.swift */; };
 		0AEE7F251E70119C00DEB98F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE7F241E70119C00DEB98F /* ViewController.swift */; };
 		0AEE7F281E70119C00DEB98F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AEE7F261E70119C00DEB98F /* Main.storyboard */; };
@@ -20,6 +22,8 @@
 
 /* Begin PBXFileReference section */
 		0A8ABE111E71252100C2CB41 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0ABA0F411E72C932009CEA8B /* AppDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDetailViewController.swift; sourceTree = "<group>"; };
+		0ABA0F431E72D90A009CEA8B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = API/Reachability.swift; sourceTree = "<group>"; };
 		0AEE7F1F1E70119C00DEB98F /* Rappi_App_List_Task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rappi_App_List_Task.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AEE7F221E70119C00DEB98F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0AEE7F241E70119C00DEB98F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +81,7 @@
 				0AEE7F371E70441F00DEB98F /* View */,
 				0AEE7F221E70119C00DEB98F /* AppDelegate.swift */,
 				0AEE7F241E70119C00DEB98F /* ViewController.swift */,
+				0ABA0F411E72C932009CEA8B /* AppDetailViewController.swift */,
 				0AEE7F261E70119C00DEB98F /* Main.storyboard */,
 				0AEE7F291E70119C00DEB98F /* Assets.xcassets */,
 				0AEE7F2B1E70119C00DEB98F /* LaunchScreen.storyboard */,
@@ -89,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				0AEE7F351E70124900DEB98F /* API.swift */,
+				0ABA0F431E72D90A009CEA8B /* Reachability.swift */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -197,9 +203,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ABA0F441E72D90A009CEA8B /* Reachability.swift in Sources */,
 				0AEE7F251E70119C00DEB98F /* ViewController.swift in Sources */,
 				0AEE7F3E1E70452C00DEB98F /* AppInformation.swift in Sources */,
 				0AEE7F3A1E70445100DEB98F /* AppCell.swift in Sources */,
+				0ABA0F421E72C932009CEA8B /* AppDetailViewController.swift in Sources */,
 				0AEE7F361E70124900DEB98F /* API.swift in Sources */,
 				0AEE7F231E70119C00DEB98F /* AppDelegate.swift in Sources */,
 			);

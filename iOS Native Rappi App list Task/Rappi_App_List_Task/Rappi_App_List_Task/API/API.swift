@@ -10,17 +10,16 @@ import UIKit
 
 
 protocol APIProtocol {
-    
-    func recievedData(data: Any)
-    
+    var isFetchingCache: Bool {get set}
+    var isInternetConnected: Bool {get set}
+    func recievedData(data: Any, fromLocal isLocal:Bool)
 }
 
 class API: NSObject  {
     var delegate : APIProtocol
-    var urlString : String
+    var urlString : String = "https://itunes.apple.com/us/rss/topfreeapplications/limit=50/json"
     
-    init(urlString: String, WithDelegate delegate: APIProtocol) {
-        self.urlString = urlString
+    init(withDelegate delegate: APIProtocol) {
         self.delegate = delegate
     }
     
@@ -33,13 +32,16 @@ class API: NSObject  {
             data, response, error in
 
             if error != nil {
-                
+                self.sendDataToDelegate(data: Data(), fromLocal: false)
             }
             else {
                 do {
                     if let json: Dictionary = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any]
                     {
-                        self.sendDataToDelegate(data: json)
+                        self.sendDataToDelegate(data: json, fromLocal: false)
+                        DispatchQueue.global().async {
+                            self.saveJSONToDocumentDirectory(jsonObject: json)
+                        }
                     }
                 } catch {
                     print("error in JSONSerialization")
@@ -50,8 +52,106 @@ class API: NSObject  {
         task.resume()
     }
     
-    func sendDataToDelegate(data: Any)  {
-        self.delegate.recievedData(data: data)
+//    MARK: Recived JSON Delegate
+    
+    func sendDataToDelegate(data: Any, fromLocal isLocal:Bool)  {
+        self.delegate.recievedData(data: data, fromLocal: isLocal)
+    }
+    
+//    MARK: Cache Handling Methods
+    
+    func getDirectoryPath() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
+    
+    func createFolders() {
+        
+        let dataPath = (self.getDirectoryPath() as NSString).appendingPathComponent("Data") as String
+        let imagePath = (self.getDirectoryPath() as NSString).appendingPathComponent("Images") as String
+        do {
+            try FileManager.default.createDirectory(atPath: dataPath, withIntermediateDirectories: false, attributes: nil)
+            try FileManager.default.createDirectory(atPath: imagePath, withIntermediateDirectories: false, attributes: nil)
+        } catch let error as NSError {
+            print(error.localizedDescription);
+        }
+        
+    }
+    
+    func saveJSONToDocumentDirectory(jsonObject: [String: Any]){
+        do{
+            self.createFolders()
+            let jsonData: Data = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
+//            let jsonString = String(data: jsonData, encoding: .utf8)
+            let filePath = (self.getDirectoryPath() as NSString).appendingPathComponent("Data/AppList.json") as String
+            let fileManager = FileManager.default
+            
+            if fileManager.createFile(atPath: filePath as String, contents: jsonData, attributes: nil){
+                print("file saved")
+            }
+            else {
+                print("file not saved")
+            }
+            
+        }
+        catch {
+            print("Problem in saving file")
+        }
+    }
+    
+    func saveImages(imageDic: [String: UIImage]) {
+        for (imageName, image) in imageDic {
+            self.saveImageToDocumentDirectory(image: image, withName: imageName)
+        }
+    }
+    
+    func saveImageToDocumentDirectory(image:UIImage, withName name: String){
+        let fileManager = FileManager.default
+        let paths = (self.getDirectoryPath() as NSString).appendingPathComponent("Images/"+name+".png")
+        print(paths)
+        let imageData = UIImagePNGRepresentation(image)
+        
+        if !fileManager.fileExists(atPath: paths) {
+            if fileManager.createFile(atPath: paths as String, contents: imageData, attributes: nil){
+                print("Image saved")
+            }
+            else {
+                print("Image not saved")
+            }
+        }
+    }
+    
+    func getImageFromDocumentDirectory(name: String) -> UIImage {
+        let fileManager = FileManager.default
+        let imagePath = (self.getDirectoryPath() as NSString).appendingPathComponent("Images/"+name+".png")
+        if fileManager.fileExists(atPath: imagePath){
+            return UIImage(contentsOfFile: imagePath)!
+        }else{
+            return UIImage(named: "defaultImage")!
+        }
+    }
+    
+    func getJSONFromDocumentDirectory()  {
+        
+        let imagePath = (self.getDirectoryPath() as NSString).appendingPathComponent("Data/AppList.json") as String
+        do {
+            
+            let jsonData: Data = try Data(contentsOf: URL(fileURLWithPath: imagePath) , options: .alwaysMapped)
+            do {
+                if let json: Dictionary = try JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [String: Any]
+                {
+                    self.sendDataToDelegate(data: json as Any, fromLocal: true)
+                }
+            } catch {
+                self.sendDataToDelegate(data: Data() as Any, fromLocal: true)
+                print("error in JSONSerialization")
+            }
+        }
+        catch let error as NSError {
+            self.sendDataToDelegate(data: Data() as Any, fromLocal: true)
+            print(error.localizedDescription)
+        }
     }
     
 }

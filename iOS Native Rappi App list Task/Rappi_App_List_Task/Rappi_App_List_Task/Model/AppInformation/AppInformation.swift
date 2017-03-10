@@ -8,6 +8,12 @@
 
 import UIKit
 
-class AppInformation: NSObject {
-
+struct AppInformation {
+    public init(){
+        
+    }
+    public var appImage: UIImage = UIImage()
+    public var appName: String = String()
+    public var copyright: String = String()
+    public var description: String = String()
 }
