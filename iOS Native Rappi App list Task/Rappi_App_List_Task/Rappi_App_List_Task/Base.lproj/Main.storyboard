@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Apps List-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Rappi_App_List_Task" customModuleProvider="target" sceneMemberID="viewController">
@@ -29,11 +29,11 @@
                                     <size key="itemSize" width="96" height="175"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="AppCell" reuseIdentifier="AppCell" id="7kK-bw-KD0" customClass="AppCell" customModule="Rappi_App_List_Task" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="96" height="175"/>
+                                        <rect key="frame" x="10" y="10" width="96" height="175"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="96" height="175"/>
@@ -110,7 +110,7 @@
                             <constraint firstAttribute="trailing" secondItem="fur-P4-U5D" secondAttribute="trailing" id="nJF-Ur-XDP"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Q1k-vG-Pzm"/>
+                    <navigationItem key="navigationItem" title="Apps List" id="Q1k-vG-Pzm"/>
                     <connections>
                         <outlet property="activityIndicator" destination="em2-kq-LJJ" id="PTJ-bo-C6M"/>
                         <outlet property="appCollectionView" destination="fur-P4-U5D" id="bef-U6-bbB"/>
@@ -154,9 +154,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyrights" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YCk-zH-cTI">
-                                <rect key="frame" x="125" y="75" width="234" height="16"/>
+                                <rect key="frame" x="125" y="75" width="234" height="18"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="16" id="MVU-7A-KTx"/>
+                                    <constraint firstAttribute="height" constant="18" id="MVU-7A-KTx"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                                 <nil key="textColor"/>
@@ -182,7 +182,6 @@
                             <constraint firstItem="VkR-yj-0QY" firstAttribute="top" secondItem="ng5-oR-JmF" secondAttribute="bottom" constant="8" id="Wv5-oQ-ZmJ"/>
                             <constraint firstItem="ixn-yr-OwZ" firstAttribute="leading" secondItem="YCk-zH-cTI" secondAttribute="leading" id="lzZ-5h-a55"/>
                             <constraint firstItem="4nR-gt-dM2" firstAttribute="top" secondItem="vmA-rx-waF" secondAttribute="bottom" constant="10" id="nbc-dF-d5L"/>
-                            <constraint firstItem="ng5-oR-JmF" firstAttribute="top" secondItem="YCk-zH-cTI" secondAttribute="bottom" constant="47" id="ofy-vF-K55"/>
                             <constraint firstItem="4nR-gt-dM2" firstAttribute="leading" secondItem="ng5-oR-JmF" secondAttribute="leading" id="qM0-Wv-iNd"/>
                             <constraint firstItem="4nR-gt-dM2" firstAttribute="top" secondItem="ixn-yr-OwZ" secondAttribute="top" id="u4l-7d-8yL"/>
                         </constraints>

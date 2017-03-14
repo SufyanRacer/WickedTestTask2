@@ -21,6 +21,7 @@ class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Apps List"
+        
         self.isInternetConnected = Reachability.connectedToNetwork()
         self.callAPIForData()
     }
@@ -80,6 +81,14 @@ class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, U
                 cell.appImage.image = image
             }
         }
+        
+        cell.alpha = 0.2
+        let actualCenter : CGPoint = cell.center
+        cell.center = CGPoint(x: collectionView.frame.width + 50, y: actualCenter.y)
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: {
+            cell.alpha = 1.0
+            cell.center = actualCenter
+        })
         return cell
     }
     
@@ -100,7 +109,13 @@ class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, U
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(10, 20, 10, 20)
+        print(UIScreen.main.bounds.width)
+    
+        if UIScreen.main.bounds.width > 375 {
+            return UIEdgeInsetsMake(0, 0, 0, 0)
+        } else {
+            return UIEdgeInsetsMake(10, 20, 10, 20)
+        }
     }
     
     func pushDetailViewWithInfo(appInformation: AppInformation) {
@@ -111,7 +126,6 @@ class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, U
         self.navigationController?.pushViewController(appDetailViewController, animated: true)
         
     }
-    
     
     // MARK:    APIProtocol Delegate Method
     
@@ -127,7 +141,6 @@ class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, U
             } else {
                 let showAlert = UIAlertController.init(title: "Error", message: "No Preview Available make sure you are connected to internet.", preferredStyle: .alert)
                 let cancel = UIAlertAction(title: "Ok", style: .default) { (action) in
-                    
                 }
                 showAlert.addAction(cancel)
                 present(showAlert, animated: true, completion: nil)
