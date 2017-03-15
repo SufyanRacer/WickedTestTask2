@@ -34,7 +34,7 @@ class AppCategoriesViewController: UIViewController, UITableViewDelegate, UITabl
         let cell:CategoryCell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell")!as! CategoryCell
         cell.categoryName.text = categoryNames[indexPath.row]
         let actualCenter : CGPoint = cell.center
-        cell.center = CGPoint(x: tableView.frame.width + 50, y: actualCenter.y)
+        cell.center = CGPoint(x: tableView.frame.width * 1.5, y: actualCenter.y)
         UIView.animate(withDuration: 0.45, delay: 0.0, options: .curveEaseInOut, animations: {
             cell.center = actualCenter
         })
@@ -42,7 +42,6 @@ class AppCategoriesViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(self.categoryNames[indexPath.row])
         self.delegate?.selectedCategory(category: self.categoryNames[indexPath.row])
         self.dismiss(animated: true)
     }
