@@ -8,19 +8,23 @@
 
 import UIKit
 
-class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, UICollectionViewDataSource {
+class ViewController: UIViewController, APIProtocol, AppCategoriesViewControllerDelegate,UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var appCollectionView: UICollectionView!
     
     var appListArray: Array = [[String: Any]]()
+    var allCategoryList: Dictionary<String, [Dictionary<String, Any>]> = [String: [Dictionary]]()
+    var categorisedAppsList: [Dictionary<String, Any>] = [[String: Any]]()
+    var isShowCategory: Bool = false
+    var categoryName: String = ""
     var imageCache: Dictionary = [String: UIImage]()
     var isFetchingCache: Bool = false
     internal var isInternetConnected: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Apps List"
+        self.title = "All Apps"
         
         self.isInternetConnected = Reachability.connectedToNetwork()
         self.callAPIForData()
@@ -42,43 +46,86 @@ class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.appListArray.count
+        if !self.isShowCategory {
+            return self.appListArray.count
+        } else {
+            return self.categorisedAppsList.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell : AppCell = collectionView.dequeueReusableCell(withReuseIdentifier: "AppCell", for: indexPath) as! AppCell
-        let appInfo : Dictionary = self.appListArray[indexPath.row]
-        let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
-        let copyright: String = (appInfo["im:artist"] as! [String: Any])["label"] as! String
-        let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
         
-        cell.appName.text = appName
-        cell.copyright.text = copyright
-        let url = URL(string: imageURLString)
-        if self.imageCache[appName] != nil {
-            cell.appImage.image = self.imageCache[appName]
-        }
-        else if self.isInternetConnected {
-            DispatchQueue.global().async {
-                do{
-                    let data = try Data(contentsOf: url!)
-                    DispatchQueue.main.sync {
-                        self.imageCache[appName] = UIImage(data: data)!
-                        cell.appImage.image = UIImage(data: data)
+        if !self.isShowCategory {
+            
+            let appInfo : Dictionary = self.appListArray[indexPath.row]
+            let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
+            let copyright: String = (appInfo["im:artist"] as! [String: Any])["label"] as! String
+            let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
+            
+            cell.appName.text = appName
+            cell.copyright.text = copyright
+            let url = URL(string: imageURLString)
+            if self.imageCache[appName] != nil {
+                cell.appImage.image = self.imageCache[appName]
+            }
+            else if self.isInternetConnected {
+                DispatchQueue.global().async {
+                    do{
+                        let data = try Data(contentsOf: url!)
+                        DispatchQueue.main.sync {
+                            self.imageCache[appName] = UIImage(data: data)!
+                            cell.appImage.image = UIImage(data: data)
+                        }
+                        API(withDelegate: self).saveImages(imageDic: self.imageCache)
                     }
-                    API(withDelegate: self).saveImages(imageDic: self.imageCache)
+                    catch {
+                        print("No image found at URL")
+                    }
                 }
-                catch {
-                    print("No image found at URL")
+            } else{
+                
+                let image: UIImage = API(withDelegate: self).getImageFromDocumentDirectory(name: appName)
+                DispatchQueue.main.async {
+                    self.imageCache[appName] = image
+                    cell.appImage.image = image
                 }
             }
-        } else{
             
-            let image: UIImage = API(withDelegate: self).getImageFromDocumentDirectory(name: appName)
-            DispatchQueue.main.async {
-                self.imageCache[appName] = image
-                cell.appImage.image = image
+        } else {
+            let appInfo : Dictionary = self.categorisedAppsList[indexPath.row]
+            let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
+            let copyright: String = (appInfo["im:artist"] as! [String: Any])["label"] as! String
+            let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
+            
+            cell.appName.text = appName
+            cell.copyright.text = copyright
+            let url = URL(string: imageURLString)
+            if self.imageCache[appName] != nil {
+                cell.appImage.image = self.imageCache[appName]
+            }
+            else if self.isInternetConnected {
+                DispatchQueue.global().async {
+                    do{
+                        let data = try Data(contentsOf: url!)
+                        DispatchQueue.main.sync {
+                            self.imageCache[appName] = UIImage(data: data)!
+                            cell.appImage.image = UIImage(data: data)
+                        }
+                        API(withDelegate: self).saveImages(imageDic: self.imageCache)
+                    }
+                    catch {
+                        print("No image found at URL")
+                    }
+                }
+            } else{
+                
+                let image: UIImage = API(withDelegate: self).getImageFromDocumentDirectory(name: appName)
+                DispatchQueue.main.async {
+                    self.imageCache[appName] = image
+                    cell.appImage.image = image
+                }
             }
         }
         
@@ -93,7 +140,13 @@ class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let appInfo : Dictionary = self.appListArray[indexPath.row]
+        let appInfo : Dictionary<String, Any>
+
+        if !self.isShowCategory {
+            appInfo = self.appListArray[indexPath.row]
+        } else {
+            appInfo = self.categorisedAppsList[indexPath.row]
+        }
         let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
         let copyright: String = (appInfo["rights"] as! [String: Any])["label"] as! String
         let description: String = (appInfo["summary"] as! [String: Any])["label"] as! String
@@ -109,15 +162,17 @@ class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, U
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        print(UIScreen.main.bounds.width)
-    
         if UIScreen.main.bounds.width > 375 {
             return UIEdgeInsetsMake(0, 0, 0, 0)
-        } else {
+        } else if UIScreen.main.bounds.width <= 320 {
+            return UIEdgeInsetsMake(10, 0, 10, 0)
+        }
+        else {
             return UIEdgeInsetsMake(10, 20, 10, 20)
         }
     }
     
+    // MARK:    Push Detail View
     func pushDetailViewWithInfo(appInformation: AppInformation) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
@@ -125,6 +180,35 @@ class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, U
         appDetailViewController.appInformation = appInformation
         self.navigationController?.pushViewController(appDetailViewController, animated: true)
         
+    }
+    
+    
+    // MARK:    Show All Categories
+    @IBAction func showAppCategoriesView(_ sender: Any) {
+        if self.allCategoryList.count > 0 {
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            let appCategoryView: AppCategoriesViewController = storyBoard.instantiateViewController(withIdentifier: "AppCategoriesViewController") as! AppCategoriesViewController
+            var categoryNames = [String]()
+            for key in self.allCategoryList.keys {
+                categoryNames.append(key)
+            }
+            appCategoryView.delegate = self
+            appCategoryView.categoryNames = categoryNames
+            present(appCategoryView, animated: true) {
+            }
+        }
+        else{
+            let showAlert = UIAlertController.init(title: "Message", message: "No Categories to show", preferredStyle: .alert)
+            let cancel = UIAlertAction(title: "Ok", style: .default) { (action) in
+            }
+            showAlert.addAction(cancel)
+            present(showAlert, animated: true, completion: nil)
+        }
+    }
+    
+    
+    @IBAction func showWishList(_ sender: Any) {
+        self.appCollectionView.reloadData()
     }
     
     // MARK:    APIProtocol Delegate Method
@@ -151,10 +235,47 @@ class ViewController: UIViewController, APIProtocol, UICollectionViewDelegate, U
     // MARK:    Update View Method
     func updateViewWithRecievedData(dataArray: [[String: Any]])  {
         self.appListArray = dataArray
+        self.findAllCategories()
         DispatchQueue.main.async {
             self.appCollectionView.reloadData()
             self.activityIndicator.stopAnimating()
         }
+    }
+    
+    // MARK:    Find all categories
+    
+    func findAllCategories() {
+        
+        for appInfo: Dictionary in self.appListArray {
+            let appCategory: String = ((appInfo["category"] as! [String: Any])["attributes"] as! [String: Any])["term"] as! String
+            if self.allCategoryList[appCategory] != nil {
+                var arr: [Dictionary] = self.allCategoryList[appCategory]! as [Dictionary]
+                arr.append(appInfo)
+                self.allCategoryList[appCategory] = arr
+            } else {
+                var newArray = [Dictionary<String, Any>]()
+                newArray.append(appInfo)
+               self.allCategoryList[appCategory] = newArray
+            }
+        }
+    }
+    
+    // MARK:    Category Delegate Method
+    
+    func selectedCategory(category: String){
+        let categoryApps : [Dictionary<String, Any>] = self.allCategoryList[category]!
+        self.categorisedAppsList = categoryApps
+        self.isShowCategory = true
+        self.categoryName = category
+        self.appCollectionView.reloadData()
+        self.title = category
+    }
+    
+    func showAllCategory(){
+        self.title = "All Apps"
+        self.isShowCategory = false
+        self.categoryName = ""
+        self.appCollectionView.reloadData()
     }
 }
 

@@ -23,7 +23,7 @@ class AppDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "App Detail"
+        self.title = "App Details"
         self.appDescriptionTextView.isScrollEnabled = false
         self.loadAppDataInView()
     }

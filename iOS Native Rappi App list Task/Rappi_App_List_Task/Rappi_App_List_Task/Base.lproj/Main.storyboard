@@ -110,7 +110,18 @@
                             <constraint firstAttribute="trailing" secondItem="fur-P4-U5D" secondAttribute="trailing" id="nJF-Ur-XDP"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Apps List" id="Q1k-vG-Pzm"/>
+                    <navigationItem key="navigationItem" title="Apps List" id="Q1k-vG-Pzm">
+                        <barButtonItem key="leftBarButtonItem" image="categoryImage" id="gnb-Zh-mm5">
+                            <connections>
+                                <action selector="showAppCategoriesView:" destination="BYZ-38-t0r" id="ILG-rX-nww"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="wishListImage" id="VqI-R9-Jdd">
+                            <connections>
+                                <action selector="showWishList:" destination="BYZ-38-t0r" id="0bo-N2-f7I"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="em2-kq-LJJ" id="PTJ-bo-C6M"/>
                         <outlet property="appCollectionView" destination="fur-P4-U5D" id="bef-U6-bbB"/>
@@ -197,6 +208,94 @@
             </objects>
             <point key="canvasLocation" x="1991.2" y="102.99850074962519"/>
         </scene>
+        <!--App Categories View Controller-->
+        <scene sceneID="ylU-Cd-hSM">
+            <objects>
+                <viewController storyboardIdentifier="AppCategoriesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xbr-bV-P8n" customClass="AppCategoriesViewController" customModule="Rappi_App_List_Task" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ECH-Tf-9Th"/>
+                        <viewControllerLayoutGuide type="bottom" id="WON-re-0Fv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Qtr-TG-7nB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gf1-qX-xpB">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="54" id="sQr-Er-y38"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="All Categories" id="9vI-9F-Baf">
+                                        <barButtonItem key="leftBarButtonItem" image="allAppList" id="AnW-6c-gJw">
+                                            <connections>
+                                                <action selector="showAllApps:" destination="xbr-bV-P8n" id="66w-Fe-PHv"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="C0X-JE-ol7">
+                                            <connections>
+                                                <action selector="dismissAppCategoryView:" destination="xbr-bV-P8n" id="cPW-UF-FKR"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="64" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aSR-1a-wZO">
+                                <rect key="frame" x="0.0" y="54" width="375" height="613"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryCell" rowHeight="64" id="RO3-Ac-Viz" customClass="CategoryCell" customModule="Rappi_App_List_Task" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="64"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RO3-Ac-Viz" id="PwR-VX-Cgu">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TD1-G0-E7D">
+                                                    <rect key="frame" x="8" y="5" width="359" height="53.5"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="TD1-G0-E7D" firstAttribute="top" secondItem="PwR-VX-Cgu" secondAttribute="topMargin" constant="-3" id="0Bz-r1-fzY"/>
+                                                <constraint firstItem="TD1-G0-E7D" firstAttribute="leading" secondItem="PwR-VX-Cgu" secondAttribute="leadingMargin" id="Ib8-EW-wp0"/>
+                                                <constraint firstItem="TD1-G0-E7D" firstAttribute="trailing" secondItem="PwR-VX-Cgu" secondAttribute="trailingMargin" id="Z9N-Qa-hTW"/>
+                                                <constraint firstItem="TD1-G0-E7D" firstAttribute="centerY" secondItem="PwR-VX-Cgu" secondAttribute="centerY" id="oPY-4c-kja"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="categoryName" destination="TD1-G0-E7D" id="2iA-j6-bpU"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="xbr-bV-P8n" id="qSP-I6-eA2"/>
+                                    <outlet property="delegate" destination="xbr-bV-P8n" id="aeF-fo-oZ3"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Gf1-qX-xpB" firstAttribute="trailing" secondItem="aSR-1a-wZO" secondAttribute="trailing" id="C9V-c4-BKV"/>
+                            <constraint firstItem="Gf1-qX-xpB" firstAttribute="top" secondItem="Qtr-TG-7nB" secondAttribute="top" id="HD0-FP-Kc3"/>
+                            <constraint firstItem="Gf1-qX-xpB" firstAttribute="leading" secondItem="aSR-1a-wZO" secondAttribute="leading" id="ReO-CF-5bV"/>
+                            <constraint firstItem="aSR-1a-wZO" firstAttribute="top" secondItem="Gf1-qX-xpB" secondAttribute="bottom" id="Yzm-Iz-Ma5"/>
+                            <constraint firstAttribute="trailing" secondItem="Gf1-qX-xpB" secondAttribute="trailing" id="ZXt-6Y-PMR"/>
+                            <constraint firstItem="aSR-1a-wZO" firstAttribute="bottom" secondItem="WON-re-0Fv" secondAttribute="top" id="fN3-A7-IcN"/>
+                            <constraint firstItem="Gf1-qX-xpB" firstAttribute="leading" secondItem="Qtr-TG-7nB" secondAttribute="leading" id="pKw-oo-A0O"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="categoryTableView" destination="aSR-1a-wZO" id="oOT-Zc-mly"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jPv-fC-6fq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1989.5999999999999" y="813.64317841079469"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="h70-LC-KIb">
             <objects>
@@ -220,6 +319,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="allAppList" width="32" height="32"/>
+        <image name="categoryImage" width="32" height="32"/>
         <image name="defaultImage" width="48" height="48"/>
+        <image name="wishListImage" width="24" height="24"/>
     </resources>
 </document>
