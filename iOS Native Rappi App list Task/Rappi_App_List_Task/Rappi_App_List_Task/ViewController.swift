@@ -176,7 +176,14 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
         let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
         let copyright: String = (appInfo["rights"] as! [String: Any])["label"] as! String
         let description: String = (appInfo["summary"] as! [String: Any])["label"] as! String
-        let appImage: UIImage = self.imageCache[appName]!
+        var appImage: UIImage
+        
+        if self.imageCache[appName] != nil {
+            appImage = self.imageCache[appName]!
+        }
+        else {
+           appImage = UIImage(named: "defaultImage")!
+        }
         
         var selectedApp: AppInformation = AppInformation.init()
         selectedApp.appImage = appImage
