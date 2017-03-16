@@ -17,7 +17,7 @@ protocol APIProtocol {
 
 class API: NSObject  {
     var delegate : APIProtocol
-    var urlString : String = "https://itunes.apple.com/us/rss/topfreeapplications/limit=50/json"
+    var urlString : String = "https://itunes.apple.com/us/rss/topfreeapplications/limit=200/json"
     
     init(withDelegate delegate: APIProtocol) {
         self.delegate = delegate
