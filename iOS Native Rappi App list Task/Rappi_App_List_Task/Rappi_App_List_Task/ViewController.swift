@@ -72,6 +72,7 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
             }
             else if self.isInternetConnected {
                 DispatchQueue.global().async {
+                    cell.appImage.image = UIImage(named: "defaultImage")
                     do{
                         let data = try Data(contentsOf: url!)
                         DispatchQueue.main.sync {
@@ -137,6 +138,31 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
             cell.center = actualCenter
         })
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath){
+        
+        let appCell = cell as! AppCell
+        if !self.isShowCategory {
+            let appInfo : Dictionary = self.appListArray[indexPath.row]
+            let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
+
+            if self.imageCache[appName] != nil {
+                appCell.appImage.image = self.imageCache[appName]
+            } else {
+                appCell.appImage.image = UIImage(named: "defaultImage")
+            }
+
+        }
+        else {
+            let appInfo : Dictionary = self.categorisedAppsList[indexPath.row]
+            let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
+            if self.imageCache[appName] != nil {
+                appCell.appImage.image = self.imageCache[appName]
+            } else {
+                appCell.appImage.image = UIImage(named: "defaultImage")
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

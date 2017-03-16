@@ -35,6 +35,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     @IBAction func updateButtonClicked(_ sender: Any) {
-        updateButton.setTitle("Clicked", for: .normal)
+        updateButton.setTitle("Checking top apps...", for: .normal)
+        extensionContext?.open(URL(string: "alltopapps://")! , completionHandler: nil)
     }
 }
