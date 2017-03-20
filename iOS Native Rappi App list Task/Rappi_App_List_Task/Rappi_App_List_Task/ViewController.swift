@@ -110,7 +110,7 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
                 DispatchQueue.global().async {
                     do{
                         let data = try Data(contentsOf: url!)
-                        DispatchQueue.main.sync {
+                        DispatchQueue.main.async {
                             self.imageCache[appName] = UIImage(data: data)!
                             cell.appImage.image = UIImage(data: data)
                         }
