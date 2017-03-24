@@ -16,6 +16,7 @@
 		0A6CB9981E797C8A0031869A /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A6CB9961E797C8A0031869A /* MainInterface.storyboard */; };
 		0A6CB99C1E797C8A0031869A /* TopAppsExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0A6CB9901E797C8A0031869A /* TopAppsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0A8ABE121E71252100C2CB41 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8ABE111E71252100C2CB41 /* Foundation.framework */; };
+		0AB3DA531E8273CB00E8B19A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A08A2F41E7A704600A7A077 /* UIKit.framework */; };
 		0ABA0F421E72C932009CEA8B /* AppDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABA0F411E72C932009CEA8B /* AppDetailViewController.swift */; };
 		0ABA0F441E72D90A009CEA8B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABA0F431E72D90A009CEA8B /* Reachability.swift */; };
 		0AEE7F231E70119C00DEB98F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE7F221E70119C00DEB98F /* AppDelegate.swift */; };
@@ -92,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AB3DA531E8273CB00E8B19A /* UIKit.framework in Frameworks */,
 				0A8ABE121E71252100C2CB41 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
