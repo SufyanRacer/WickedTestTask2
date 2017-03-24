@@ -14,9 +14,9 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     @IBOutlet weak var appCollectionView: UICollectionView!
     
     var appListArray: Array = [[String: Any]]()
+    var showDataArray: Array = [[String: Any]]()
     var allCategoryList: Dictionary<String, [Dictionary<String, Any>]> = [String: [Dictionary]]()
     var categorisedAppsList: [Dictionary<String, Any>] = [[String: Any]]()
-    var isShowCategory: Bool = false
     var categoryName: String = ""
     var imageCache: Dictionary = [String: UIImage]()
     var isFetchingCache: Bool = false
@@ -25,7 +25,6 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "All Apps"
-        
         self.isInternetConnected = Reachability.connectedToNetwork()
         self.callAPIForData()
     }
@@ -39,97 +38,52 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
         API(withDelegate: self).getJSONFromDocumentDirectory()
     }
     
-    
     // MARK:    CollectionView Delegate Methods
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if !self.isShowCategory {
-            return self.appListArray.count
-        } else {
-            return self.categorisedAppsList.count
-        }
+        return self.showDataArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell : AppCell = collectionView.dequeueReusableCell(withReuseIdentifier: "AppCell", for: indexPath) as! AppCell
         
-        if !self.isShowCategory {
-            
-            let appInfo : Dictionary = self.appListArray[indexPath.row]
-            let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
-            let copyright: String = (appInfo["im:artist"] as! [String: Any])["label"] as! String
-            let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
-            
-            cell.appName.text = appName
-            cell.copyright.text = copyright
-            let url = URL(string: imageURLString)
-            if self.imageCache[appName] != nil {
-                cell.appImage.image = self.imageCache[appName]
-            }
-            else if self.isInternetConnected {
-                DispatchQueue.global().async {
-                    cell.appImage.image = UIImage(named: "defaultImage")
-                    do{
-                        let data = try Data(contentsOf: url!)
-                        DispatchQueue.main.sync {
-                            self.imageCache[appName] = UIImage(data: data)!
-                            cell.appImage.image = UIImage(data: data)
-                        }
-                        API(withDelegate: self).saveImages(imageDic: self.imageCache)
+        let appInfo : Dictionary = self.showDataArray[indexPath.row]
+        let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
+        let copyright: String = (appInfo["im:artist"] as! [String: Any])["label"] as! String
+        let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
+        
+        cell.appName.text = appName
+        cell.copyright.text = copyright
+        let url = URL(string: imageURLString)
+        if self.imageCache[appName] != nil {
+            cell.appImage.image = self.imageCache[appName]
+        }
+        else if self.isInternetConnected {
+            DispatchQueue.global().async {
+                do{
+                    let data = try Data(contentsOf: url!)
+                    DispatchQueue.main.async {
+                        self.imageCache[appName] = UIImage(data: data)!
+                        cell.appImage.image = UIImage(data: data)
                     }
-                    catch {
-                        print("No image found at URL")
-                    }
+                    API(withDelegate: self).saveImages(imageDic: self.imageCache)
                 }
-            } else{
-                
-                let image: UIImage = API(withDelegate: self).getImageFromDocumentDirectory(name: appName)
-                DispatchQueue.main.async {
-                    self.imageCache[appName] = image
-                    cell.appImage.image = image
+                catch {
+                    print("No image found at URL")
                 }
             }
-            
-        } else {
-            let appInfo : Dictionary = self.categorisedAppsList[indexPath.row]
-            let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
-            let copyright: String = (appInfo["im:artist"] as! [String: Any])["label"] as! String
-            let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
-            
-            cell.appName.text = appName
-            cell.copyright.text = copyright
-            let url = URL(string: imageURLString)
-            if self.imageCache[appName] != nil {
-                cell.appImage.image = self.imageCache[appName]
-            }
-            else if self.isInternetConnected {
-                DispatchQueue.global().async {
-                    do{
-                        let data = try Data(contentsOf: url!)
-                        DispatchQueue.main.async {
-                            self.imageCache[appName] = UIImage(data: data)!
-                            cell.appImage.image = UIImage(data: data)
-                        }
-                        API(withDelegate: self).saveImages(imageDic: self.imageCache)
-                    }
-                    catch {
-                        print("No image found at URL")
-                    }
-                }
-            } else{
-                
-                let image: UIImage = API(withDelegate: self).getImageFromDocumentDirectory(name: appName)
-                DispatchQueue.main.async {
-                    self.imageCache[appName] = image
-                    cell.appImage.image = image
-                }
+        } else{
+            let image: UIImage = API(withDelegate: self).getImageFromDocumentDirectory(name: appName)
+            DispatchQueue.main.async {
+                self.imageCache[appName] = image
+                cell.appImage.image = image
             }
         }
-        
         cell.alpha = 0.2
         let actualCenter : CGPoint = cell.center
         cell.center = CGPoint(x: collectionView.frame.width + 50, y: actualCenter.y)
@@ -143,48 +97,29 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath){
         
         let appCell = cell as! AppCell
-        if !self.isShowCategory {
-            let appInfo : Dictionary = self.appListArray[indexPath.row]
-            let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
-
-            if self.imageCache[appName] != nil {
-                appCell.appImage.image = self.imageCache[appName]
-            } else {
-                appCell.appImage.image = UIImage(named: "defaultImage")
-            }
-
-        }
-        else {
-            let appInfo : Dictionary = self.categorisedAppsList[indexPath.row]
-            let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
-            if self.imageCache[appName] != nil {
-                appCell.appImage.image = self.imageCache[appName]
-            } else {
-                appCell.appImage.image = UIImage(named: "defaultImage")
-            }
+        
+        let appInfo : Dictionary = self.showDataArray[indexPath.row]
+        let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
+        if self.imageCache[appName] != nil {
+            appCell.appImage.image = self.imageCache[appName]
+        } else {
+            appCell.appImage.image = UIImage(named: "defaultImage")
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let appInfo : Dictionary<String, Any>
-
-        if !self.isShowCategory {
-            appInfo = self.appListArray[indexPath.row]
-        } else {
-            appInfo = self.categorisedAppsList[indexPath.row]
-        }
+        appInfo = self.showDataArray[indexPath.row]
         let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
         let copyright: String = (appInfo["rights"] as! [String: Any])["label"] as! String
         let description: String = (appInfo["summary"] as! [String: Any])["label"] as! String
         var appImage: UIImage
-        
         if self.imageCache[appName] != nil {
             appImage = self.imageCache[appName]!
         }
         else {
            appImage = UIImage(named: "defaultImage")!
         }
-        
         var selectedApp: AppInformation = AppInformation.init()
         selectedApp.appImage = appImage
         selectedApp.appName = appName
@@ -214,7 +149,6 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
         self.navigationController?.pushViewController(appDetailViewController, animated: true)
         
     }
-    
     
     // MARK:    Show All Categories
     @IBAction func showAppCategoriesView(_ sender: Any) {
@@ -268,6 +202,7 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     // MARK:    Update View Method
     func updateViewWithRecievedData(dataArray: [[String: Any]])  {
         self.appListArray = dataArray
+        self.showDataArray = dataArray
         self.findAllCategories()
         DispatchQueue.main.async {
             self.appCollectionView.reloadData()
@@ -297,8 +232,7 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     
     func selectedCategory(category: String){
         let categoryApps : [Dictionary<String, Any>] = self.allCategoryList[category]!
-        self.categorisedAppsList = categoryApps
-        self.isShowCategory = true
+        self.showDataArray = categoryApps
         self.categoryName = category
         self.appCollectionView.reloadData()
         self.title = category
@@ -306,7 +240,7 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     
     func showAllCategory(){
         self.title = "All Apps"
-        self.isShowCategory = false
+        self.showDataArray = self.appListArray
         self.categoryName = ""
         self.appCollectionView.reloadData()
     }
