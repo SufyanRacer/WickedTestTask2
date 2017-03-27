@@ -19,7 +19,6 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     var categorisedAppsList: [Dictionary<String, Any>] = [[String: Any]]()
     var categoryName: String = ""
     var imageCache: Dictionary = [String: UIImage]()
-    var isFetchingCache: Bool = false
     internal var isInternetConnected: Bool = true
     
     override func viewDidLoad() {
@@ -34,7 +33,6 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     }
     
     func callAPIForLocalFile() {
-        self.isFetchingCache = true
         API(withDelegate: self).getJSONFromDocumentDirectory()
     }
     
@@ -49,62 +47,29 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell : AppCell = collectionView.dequeueReusableCell(withReuseIdentifier: "AppCell", for: indexPath) as! AppCell
-        
         let appInfo : Dictionary = self.showDataArray[indexPath.row]
         let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
         let copyright: String = (appInfo["im:artist"] as! [String: Any])["label"] as! String
-        let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
-        
         cell.appName.text = appName
         cell.copyright.text = copyright
-        let url = URL(string: imageURLString)
-        if self.imageCache[appName] != nil {
-            cell.appImage.image = self.imageCache[appName]
-        }
-        else if self.isInternetConnected {
-            DispatchQueue.global().async {
-                do{
-                    let data = try Data(contentsOf: url!)
-                    DispatchQueue.main.async {
-                        self.imageCache[appName] = UIImage(data: data)!
-                        cell.appImage.image = UIImage(data: data)
-                    }
-                    API(withDelegate: self).saveImages(imageDic: self.imageCache)
-                }
-                catch {
-                    print("No image found at URL")
-                }
-            }
-        } else{
-            let image: UIImage = API(withDelegate: self).getImageFromDocumentDirectory(name: appName)
-            DispatchQueue.main.async {
-                self.imageCache[appName] = image
-                cell.appImage.image = image
-            }
-        }
-        cell.alpha = 0.2
-        let actualCenter : CGPoint = cell.center
-        cell.center = CGPoint(x: collectionView.frame.width + 50, y: actualCenter.y)
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: {
-            cell.alpha = 1.0
-            cell.center = actualCenter
-        })
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath){
-        
         let appCell = cell as! AppCell
-        
         let appInfo : Dictionary = self.showDataArray[indexPath.row]
         let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
         if self.imageCache[appName] != nil {
             appCell.appImage.image = self.imageCache[appName]
-        } else {
-            appCell.appImage.image = UIImage(named: "defaultImage")
+        } else{
+            appCell.appImage.image = API().getImageFromDocumentDirectory(name: appName)
         }
+        let previousFrame: CGRect = appCell.appImage.frame
+        appCell.appImage.frame = CGRect(x: appCell.appImage.center.x, y: appCell.appImage.center.y, width: 0, height: 0)
+        UIView.animate(withDuration: 0.6, delay: 0.0, options: .curveEaseInOut, animations: {
+            appCell.appImage.frame = previousFrame
+        })
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -118,7 +83,7 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
             appImage = self.imageCache[appName]!
         }
         else {
-           appImage = UIImage(named: "defaultImage")!
+           appImage = API().getImageFromDocumentDirectory(name: appName)
         }
         var selectedApp: AppInformation = AppInformation.init()
         selectedApp.appImage = appImage
@@ -143,7 +108,6 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     // MARK:    Push Detail View
     func pushDetailViewWithInfo(appInformation: AppInformation) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
         let appDetailViewController: AppDetailViewController = storyBoard.instantiateViewController(withIdentifier: "AppDetailViewController") as! AppDetailViewController
         appDetailViewController.appInformation = appInformation
         self.navigationController?.pushViewController(appDetailViewController, animated: true)
@@ -184,10 +148,9 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
         if (data as? [String: Any]) != nil {
             let JSONData: Dictionary = data as! [String: Any]
             let dataArray: Array = (JSONData["feed"] as! [String: Any])["entry"] as! [[String: Any]]
-            self.isFetchingCache = isLocal
             updateViewWithRecievedData(dataArray: dataArray)
         } else {
-            if !self.isFetchingCache {
+            if !isLocal {
                 self.callAPIForLocalFile()
             } else {
                 let showAlert = UIAlertController.init(title: "Error", message: "No Preview Available make sure you are connected to internet.", preferredStyle: .alert)
@@ -204,6 +167,11 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
         self.appListArray = dataArray
         self.showDataArray = dataArray
         self.findAllCategories()
+        if self.isInternetConnected {
+            DispatchQueue.global().async {
+                self.makeImageCache()
+            }
+        }
         DispatchQueue.main.async {
             self.appCollectionView.reloadData()
             self.activityIndicator.stopAnimating()
@@ -213,17 +181,39 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
     // MARK:    Find all categories
     
     func findAllCategories() {
-        
         for appInfo: Dictionary in self.appListArray {
             let appCategory: String = ((appInfo["category"] as! [String: Any])["attributes"] as! [String: Any])["term"] as! String
             if self.allCategoryList[appCategory] != nil {
-                var arr: [Dictionary] = self.allCategoryList[appCategory]! as [Dictionary]
-                arr.append(appInfo)
-                self.allCategoryList[appCategory] = arr
+                var array: [Dictionary] = self.allCategoryList[appCategory]! as [Dictionary]
+                array.append(appInfo)
+                self.allCategoryList[appCategory] = array
             } else {
                 var newArray = [Dictionary<String, Any>]()
                 newArray.append(appInfo)
                self.allCategoryList[appCategory] = newArray
+            }
+        }
+    }
+    
+    func makeImageCache() {
+        for (index,item) in self.appListArray.enumerated() {
+            let appInfo : Dictionary = item
+            let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
+            
+            let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
+            let url = URL(string: imageURLString)
+            do{
+                let data = try Data(contentsOf: url!)
+                self.imageCache[appName] = UIImage(data: data)!
+                DispatchQueue.main.async {
+                    if self.showDataArray.count > index {
+                        self.appCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
+                    }
+                }
+                API().saveImages(imageDic: self.imageCache)
+            }
+            catch {
+                print("No image found at URL")
             }
         }
     }

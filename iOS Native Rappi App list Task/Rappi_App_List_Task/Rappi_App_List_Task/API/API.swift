@@ -10,17 +10,20 @@ import UIKit
 
 
 protocol APIProtocol {
-    var isFetchingCache: Bool {get set}
     var isInternetConnected: Bool {get set}
     func recievedData(data: Any, fromLocal isLocal:Bool)
 }
 
 class API: NSObject  {
-    var delegate : APIProtocol
+    var delegate : APIProtocol?
     var urlString : String = "https://itunes.apple.com/us/rss/topfreeapplications/limit=200/json"
     
     init(withDelegate delegate: APIProtocol) {
         self.delegate = delegate
+    }
+    
+    override init() {
+        super.init()
     }
     
     func fetchJSONData() {
@@ -55,7 +58,7 @@ class API: NSObject  {
 //    MARK: Recived JSON Delegate
     
     func sendDataToDelegate(data: Any, fromLocal isLocal:Bool)  {
-        self.delegate.recievedData(data: data, fromLocal: isLocal)
+        self.delegate?.recievedData(data: data, fromLocal: isLocal)
     }
     
 //    MARK: Cache Handling Methods
@@ -100,6 +103,13 @@ class API: NSObject  {
         }
     }
     
+    func checkImageAvailability(name: String) -> Bool {
+        let fileManager = FileManager.default
+        let path = (self.getDirectoryPath() as NSString).appendingPathComponent("Images/"+name+".png")
+        return fileManager.fileExists(atPath: path)
+    }
+    
+    
     func saveImages(imageDic: [String: UIImage]) {
         for (imageName, image) in imageDic {
             self.saveImageToDocumentDirectory(image: image, withName: imageName)
@@ -108,17 +118,13 @@ class API: NSObject  {
     
     func saveImageToDocumentDirectory(image:UIImage, withName name: String){
         let fileManager = FileManager.default
-        let paths = (self.getDirectoryPath() as NSString).appendingPathComponent("Images/"+name+".png")
-        print(paths)
+        let path = (self.getDirectoryPath() as NSString).appendingPathComponent("Images/"+name+".png")
         let imageData = UIImagePNGRepresentation(image)
-        
-        if !fileManager.fileExists(atPath: paths) {
-            if fileManager.createFile(atPath: paths as String, contents: imageData, attributes: nil){
-                print("Image saved")
-            }
-            else {
-                print("Image not saved")
-            }
+        if fileManager.createFile(atPath: path as String, contents: imageData, attributes: nil){
+            print("Image saved")
+        }
+        else {
+            print("Image already exist")
         }
     }
     
