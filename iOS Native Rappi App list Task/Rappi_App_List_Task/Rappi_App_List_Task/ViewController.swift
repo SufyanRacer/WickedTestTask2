@@ -53,6 +53,20 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
         let copyright: String = (appInfo["im:artist"] as! [String: Any])["label"] as! String
         cell.appName.text = appName
         cell.copyright.text = copyright
+        
+        if self.imageCache[appName] == nil && self.isInternetConnected {
+            DispatchQueue.global().async {
+                let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
+                let url = URL(string: imageURLString)
+                do{
+                    let data = try Data(contentsOf: url!)
+                    self.imageCache[appName] = UIImage(data: data)!
+                }
+                catch {
+                    print("No image found at URL")
+                }
+            }
+        }
         return cell
     }
     
@@ -67,7 +81,7 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
         }
         let previousFrame: CGRect = appCell.appImage.frame
         appCell.appImage.frame = CGRect(x: appCell.appImage.center.x, y: appCell.appImage.center.y, width: 0, height: 0)
-        UIView.animate(withDuration: 0.6, delay: 0.0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.65, delay: 0.0, options: .curveEaseInOut, animations: {
             appCell.appImage.frame = previousFrame
         })
     }
@@ -199,7 +213,6 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
         for (index,item) in self.appListArray.enumerated() {
             let appInfo : Dictionary = item
             let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
-            
             let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
             let url = URL(string: imageURLString)
             do{
