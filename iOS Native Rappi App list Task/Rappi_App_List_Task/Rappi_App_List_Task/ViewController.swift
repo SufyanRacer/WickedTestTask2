@@ -213,22 +213,24 @@ class ViewController: UIViewController, APIProtocol, AppCategoriesViewController
         for (index,item) in self.appListArray.enumerated() {
             let appInfo : Dictionary = item
             let appName: String = (appInfo["im:name"] as! [String: Any])["label"] as! String
-            let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
-            let url = URL(string: imageURLString)
-            do{
-                let data = try Data(contentsOf: url!)
-                self.imageCache[appName] = UIImage(data: data)!
-                DispatchQueue.main.async {
-                    if self.showDataArray.count > index {
-                        self.appCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
+            if self.imageCache[appName] == nil {
+                let imageURLString: String = ((appInfo["im:image"] as! [[String: Any]])[2])["label"] as! String
+                let url = URL(string: imageURLString)
+                do{
+                    let data = try Data(contentsOf: url!)
+                    self.imageCache[appName] = UIImage(data: data)!
+                    DispatchQueue.main.async {
+                        if self.showDataArray.count > index {
+                            self.appCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
+                        }
                     }
                 }
-                API().saveImages(imageDic: self.imageCache)
-            }
-            catch {
-                print("No image found at URL")
+                catch {
+                    print("No image found at URL")
+                }
             }
         }
+        API().saveImages(imageDic: self.imageCache)
     }
     
     // MARK:    Category Delegate Method
