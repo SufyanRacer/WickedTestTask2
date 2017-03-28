@@ -24,6 +24,7 @@ class AppDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "App Details"
+        self.appDescriptionTextView.isScrollEnabled = false
         self.loadAppDataInView()
     }
 
@@ -32,7 +33,7 @@ class AppDetailViewController: UIViewController {
         self.appNameLabel.text = self.appInformation.appName
         self.appCopyrightLabel.text = self.appInformation.copyright
         self.appDescriptionTextView.text = self.appInformation.description
-        self.appDescriptionTextView.setContentOffset(CGPoint.zero, animated: true)
+        self.appDescriptionTextView.isScrollEnabled = true
     }
     
 
