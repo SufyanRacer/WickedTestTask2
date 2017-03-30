@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0AEE7F1E1E70119C00DEB98F"
-               BuildableName = "Rappi_App_List_Task.app"
-               BlueprintName = "Rappi_App_List_Task"
-               ReferencedContainer = "container:Rappi_App_List_Task.xcodeproj">
+               BuildableName = "Top Apps.app"
+               BlueprintName = "TopApps"
+               ReferencedContainer = "container:TopApps.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEE7F1E1E70119C00DEB98F"
-            BuildableName = "Rappi_App_List_Task.app"
-            BlueprintName = "Rappi_App_List_Task"
-            ReferencedContainer = "container:Rappi_App_List_Task.xcodeproj">
+            BuildableName = "Top Apps.app"
+            BlueprintName = "TopApps"
+            ReferencedContainer = "container:TopApps.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEE7F1E1E70119C00DEB98F"
-            BuildableName = "Rappi_App_List_Task.app"
-            BlueprintName = "Rappi_App_List_Task"
-            ReferencedContainer = "container:Rappi_App_List_Task.xcodeproj">
+            BuildableName = "Top Apps.app"
+            BlueprintName = "TopApps"
+            ReferencedContainer = "container:TopApps.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEE7F1E1E70119C00DEB98F"
-            BuildableName = "Rappi_App_List_Task.app"
-            BlueprintName = "Rappi_App_List_Task"
-            ReferencedContainer = "container:Rappi_App_List_Task.xcodeproj">
+            BuildableName = "Top Apps.app"
+            BlueprintName = "TopApps"
+            ReferencedContainer = "container:TopApps.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

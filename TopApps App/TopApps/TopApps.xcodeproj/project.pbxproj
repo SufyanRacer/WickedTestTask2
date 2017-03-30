@@ -54,8 +54,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0A08A2F21E7A6D1E00A7A077 /* TopAppsExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TopAppsExtension.entitlements; sourceTree = "<group>"; };
-		0A08A2F31E7A6F6200A7A077 /* Rappi_App_List_Task.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Rappi_App_List_Task.entitlements; sourceTree = "<group>"; };
 		0A08A2F41E7A704600A7A077 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0A6CB9871E7922370031869A /* AppCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCategoriesViewController.swift; sourceTree = "<group>"; };
 		0A6CB98A1E7928B60031869A /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CategoryCell.swift; path = View/CategoryCell/CategoryCell.swift; sourceTree = "<group>"; };
@@ -67,7 +65,7 @@
 		0A8ABE111E71252100C2CB41 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0ABA0F411E72C932009CEA8B /* AppDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDetailViewController.swift; sourceTree = "<group>"; };
 		0ABA0F431E72D90A009CEA8B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = API/Reachability.swift; sourceTree = "<group>"; };
-		0AEE7F1F1E70119C00DEB98F /* Rappi_App_List_Task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rappi_App_List_Task.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AEE7F1F1E70119C00DEB98F /* Top Apps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Top Apps.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AEE7F221E70119C00DEB98F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0AEE7F241E70119C00DEB98F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0AEE7F271E70119C00DEB98F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -112,7 +110,6 @@
 		0A6CB9931E797C8A0031869A /* TopAppsExtension */ = {
 			isa = PBXGroup;
 			children = (
-				0A08A2F21E7A6D1E00A7A077 /* TopAppsExtension.entitlements */,
 				0A6CB9941E797C8A0031869A /* TodayViewController.swift */,
 				0A6CB9961E797C8A0031869A /* MainInterface.storyboard */,
 				0A6CB9991E797C8A0031869A /* Info.plist */,
@@ -133,7 +130,7 @@
 		0AEE7F161E70119C00DEB98F = {
 			isa = PBXGroup;
 			children = (
-				0AEE7F211E70119C00DEB98F /* Rappi_App_List_Task */,
+				0AEE7F211E70119C00DEB98F /* TopApps */,
 				0A6CB9931E797C8A0031869A /* TopAppsExtension */,
 				0AEE7F201E70119C00DEB98F /* Products */,
 				0A8ABE101E71252100C2CB41 /* Frameworks */,
@@ -143,16 +140,15 @@
 		0AEE7F201E70119C00DEB98F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0AEE7F1F1E70119C00DEB98F /* Rappi_App_List_Task.app */,
+				0AEE7F1F1E70119C00DEB98F /* Top Apps.app */,
 				0A6CB9901E797C8A0031869A /* TopAppsExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		0AEE7F211E70119C00DEB98F /* Rappi_App_List_Task */ = {
+		0AEE7F211E70119C00DEB98F /* TopApps */ = {
 			isa = PBXGroup;
 			children = (
-				0A08A2F31E7A6F6200A7A077 /* Rappi_App_List_Task.entitlements */,
 				0AEE7F341E70122E00DEB98F /* API */,
 				0AEE7F3B1E7044EB00DEB98F /* Model */,
 				0AEE7F371E70441F00DEB98F /* View */,
@@ -165,7 +161,7 @@
 				0AEE7F2B1E70119C00DEB98F /* LaunchScreen.storyboard */,
 				0AEE7F2E1E70119C00DEB98F /* Info.plist */,
 			);
-			path = Rappi_App_List_Task;
+			path = TopApps;
 			sourceTree = "<group>";
 		};
 		0AEE7F341E70122E00DEB98F /* API */ = {
@@ -230,9 +226,9 @@
 			productReference = 0A6CB9901E797C8A0031869A /* TopAppsExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		0AEE7F1E1E70119C00DEB98F /* Rappi_App_List_Task */ = {
+		0AEE7F1E1E70119C00DEB98F /* TopApps */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0AEE7F311E70119C00DEB98F /* Build configuration list for PBXNativeTarget "Rappi_App_List_Task" */;
+			buildConfigurationList = 0AEE7F311E70119C00DEB98F /* Build configuration list for PBXNativeTarget "TopApps" */;
 			buildPhases = (
 				0AEE7F1B1E70119C00DEB98F /* Sources */,
 				0AEE7F1C1E70119C00DEB98F /* Frameworks */,
@@ -244,9 +240,9 @@
 			dependencies = (
 				0A6CB99B1E797C8A0031869A /* PBXTargetDependency */,
 			);
-			name = Rappi_App_List_Task;
-			productName = Rappi_App_List_Task;
-			productReference = 0AEE7F1F1E70119C00DEB98F /* Rappi_App_List_Task.app */;
+			name = TopApps;
+			productName = TopApps;
+			productReference = 0AEE7F1F1E70119C00DEB98F /* Top Apps.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -281,7 +277,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 0AEE7F1A1E70119C00DEB98F /* Build configuration list for PBXProject "Rappi_App_List_Task" */;
+			buildConfigurationList = 0AEE7F1A1E70119C00DEB98F /* Build configuration list for PBXProject "TopApps" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -294,7 +290,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0AEE7F1E1E70119C00DEB98F /* Rappi_App_List_Task */,
+				0AEE7F1E1E70119C00DEB98F /* TopApps */,
 				0A6CB98F1E797C8A0031869A /* TopAppsExtension */,
 			);
 		};
@@ -392,7 +388,7 @@
 				INFOPLIST_FILE = TopAppsExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.test.Rappi-App-List-Task.TopAppsExtension";
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.TopApps.TopAppsExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
@@ -406,7 +402,7 @@
 				INFOPLIST_FILE = TopAppsExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.test.Rappi-App-List-Task.TopAppsExtension";
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.TopApps.TopAppsExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
@@ -511,12 +507,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_OPTIMIZATION_PROFILE_FILE = "";
 				DEVELOPMENT_TEAM = CW6QM3K6LP;
-				INFOPLIST_FILE = Rappi_App_List_Task/Info.plist;
+				INFOPLIST_FILE = TopApps/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.test.Rappi-App-List-Task";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.TopApps;
+				PRODUCT_NAME = "Top Apps";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -527,12 +524,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_OPTIMIZATION_PROFILE_FILE = "";
 				DEVELOPMENT_TEAM = CW6QM3K6LP;
-				INFOPLIST_FILE = Rappi_App_List_Task/Info.plist;
+				INFOPLIST_FILE = TopApps/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.test.Rappi-App-List-Task";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.TopApps;
+				PRODUCT_NAME = "Top Apps";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -550,7 +548,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0AEE7F1A1E70119C00DEB98F /* Build configuration list for PBXProject "Rappi_App_List_Task" */ = {
+		0AEE7F1A1E70119C00DEB98F /* Build configuration list for PBXProject "TopApps" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0AEE7F2F1E70119C00DEB98F /* Debug */,
@@ -559,7 +557,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0AEE7F311E70119C00DEB98F /* Build configuration list for PBXNativeTarget "Rappi_App_List_Task" */ = {
+		0AEE7F311E70119C00DEB98F /* Build configuration list for PBXNativeTarget "TopApps" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0AEE7F321E70119C00DEB98F /* Debug */,
